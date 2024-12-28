@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่ครอง นาคี</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        /* วิดีโอพื้นหลัง */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .title {
+            font-size: 50px;
+            color: #D2B84A;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: absolute;
+            top: 10px;
+            z-index: 1;
+            font-weight: bold;
+            animation: crackEffect 3s infinite;
+        }
+
+        @keyframes crackEffect {
+            0% {
+                text-shadow: 0 0 5px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
+            }
+            50% {
+                text-shadow: -2px -2px 5px rgba(255, 255, 255, 0.7), 2px 2px 5px rgba(0, 0, 0, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 5px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.7);
+            }
+        }
+
+        .btn-predict {
+            position: relative;
+            background-color: transparent;
+            color: #D2B84A;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: 2px solid #D2B84A;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-predict:hover {
+            background-color: #D2B84A;
+            color: #000;
+        }
+
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 10;
+            font-size: 24px;
+        }
+
+        .result-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 20;
+        }
+
+        .result-modal h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-modal .content {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .result-modal .profile {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .result-modal .profile img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .btn-close, .btn-facebook {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-close {
+            background-color: #FF5733;
+        }
+
+        .credit {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- แก้ไขเส้นทางของไฟล์ video -->
+        <video class="video-background" autoplay muted loop>
+            <source src="new-video.mp4" type="video/mp4">
+            วิดีโอพื้นหลังไม่สามารถเล่นได้
+        </video>
+
+        <audio id="background-music" loop>
+            <source src="new-music.mp3" type="audio/mp3">
+            เพลงพื้นหลังไม่สามารถเล่นได้
+        </audio>
+
+        <h1 class="title">คู่ครอง นาคี</h1>
+        <button class="btn-predict" onclick="startPrediction()">กดดูดวง</button>
+    </div>
+
+    <div class="loading-screen" id="loading-screen">กำลังประมวลผลข้อมูล...</div>
+
+    <div class="result-modal" id="result-modal">
+        <h2>สถานะของคุณ</h2>
+        <div class="content">
+            <p>คุณ มินัด</p>
+            <p>อายุ 16 - 17 ปี</p>
+            <p>สถานะค่าความสัมพันธ์ <span style="color: rainbow;">มีแฟนแล้ว</span></p>
+            <p>อาศัยอยู่ จังหวัดอุดรธานี</p>
+            <p style="margin-top: 10px; font-style: italic; color: #D9534F;">
+                ดวงของคุณในวันนี้อาจมีปัญหาจากเรื่องความรักไม่เข้าใจกันบางอย่าง 
+                แนะนำให้มีสติและคุมอารมณ์ตัวเองไว้
+            </p>
+        </div>
+        <div class="profile">
+            <img src="https://graph.facebook.com/100087855166331/picture" alt="โปรไฟล์เฟซบุ๊ก">
+            <a class="btn-facebook" href="https://www.facebook.com/profile.php?id=100087855166331&mibextid=ZbWKwL" target="_blank">ดูโปรไฟล์เฟซบุ๊ก</a>
+        </div>
+        <button class="btn-close" onclick="closeModal()">ปิด</button>
+    </div>
+
+    <div class="credit">พัฒนาโดย ทีมงาน</div>
+
+    <script>
+        const loadingScreen = document.getElementById('loading-screen');
+        const resultModal = document.getElementById('result-modal');
+        const audio = document.getElementById('background-music');
+
+        function startPrediction() {
+            document.querySelector('.btn-predict').style.display = 'none';
+            loadingScreen.style.display = 'flex';
+
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                resultModal.style.display = 'block';
+            }, 3000);
+        }
+
+        function closeModal() {
+            resultModal.style.display = 'none';
+            document.querySelector('.btn-predict').style.display = 'block';
+        }
+
+        document.body.addEventListener('click', () => {
+            audio.play().then(() => {
+                console.log('เพลงเริ่มเล่น');
+            }).catch((error) => {
+                console.error('ไม่สามารถเล่นเพลงได้:', error);
+            });
+        });
+    </script>
+</body>
+</html>
